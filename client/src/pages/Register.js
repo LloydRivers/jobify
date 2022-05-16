@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Logo, FormRow, Alert } from "../components";
 import Wrapper from "../assets/wrappers/RegisterPage";
 import { useAppContext } from "../context/appContext";
+import { DISPLAY_ALERT } from "../context/actions";
 
 const initialState = {
   name: "",
@@ -14,7 +15,7 @@ const initialState = {
 function Register() {
   const [values, setValues] = useState(initialState);
 
-  const { isLoading, showAlert } = useAppContext();
+  const { isLoading, showAlert, displayAlert } = useAppContext();
   // global context and useNavigate later
 
   const toggleMember = () => {
@@ -28,7 +29,12 @@ function Register() {
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target);
+    const { name, email, password, isMember } = values;
+    if (!email || !password || (!isMember && !name)) {
+      displayAlert();
+      return;
+    }
+    console.log(values);
   };
   return (
     <Wrapper className="full-page">
